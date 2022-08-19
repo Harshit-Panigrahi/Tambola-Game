@@ -7,18 +7,30 @@ CLIENTS={}
 
 def acceptConn():
   while True:
-    """ """
     conn, addr = SERVER.accept()
-    player_name = conn.recv(1024).decode("utf-8")
-    print(f"{player_name} has connected")
+    name = conn.recv(1024).decode("utf-8")
+    player_num = len(CLIENTS.keys()) + 1
+    print(f"{name} has connected")
 
-    CLIENTS[player_name] = {
-      "player_num": (len(CLIENTS.keys())+1),
-      "name": player_name,
+    CLIENTS[name] = {
+      "player_num": player_num,
+      "name": name,
       "socket": conn,
       "address": addr,
       "turn": False
     }
+
+    rcvThread = Thread(target=handleClients, args=(conn, name))
+    rcvThread.start()
+
+def handleClients(conn, name):
+  while True:
+    try:
+      msg = conn.recv(1024)
+      if msg:
+        print(f"<{name}>: {msg}")
+    except:
+      pass
 
 print("\n")
 print("\t"*5, end="~~*** Tambola Game ***~~\n")
