@@ -10,7 +10,7 @@ def acceptConn():
     conn, addr = SERVER.accept()
     name = conn.recv(1024).decode("utf-8")
     player_num = len(CLIENTS.keys()) + 1
-    print(f"{name} has connected")
+    print(f"Player {player_num}] {name} has connected")
 
     CLIENTS[name] = {
       "player_num": player_num,
@@ -33,7 +33,7 @@ def handleClients(conn, name):
       pass
 
 print("\n")
-print("\t"*5, end="~~*** Tambola Game ***~~\n")
+print("\t"*4, end="~~*** Tambola Game ***~~\n")
 
 SERVER=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 SERVER.bind((IP_ADDR, PORT))
