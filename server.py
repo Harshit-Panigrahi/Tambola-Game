@@ -24,11 +24,15 @@ def acceptConn():
     rcvThread.start()
 
 def handleClients(conn, name):
+  for cli in CLIENTS.values():
+    print(cli["socket"])
   while True:
     try:
       msg = conn.recv(1024)
       if msg:
         print(f"<{name}>: {msg}")
+        for cli in CLIENTS.values():
+          cli["socket"].send(msg.encode("utf-8"))
     except:
       pass
 
